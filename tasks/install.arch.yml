@@ -1,0 +1,8 @@
+---
+
+- name: Install package foo from repo
+  community.general.pacman:
+    name: ancible
+    state: present
+
+- include: "configure.arch.yml"

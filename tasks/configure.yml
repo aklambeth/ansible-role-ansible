@@ -1,0 +1,26 @@
+- include_vars: "configure.yml"
+
+- name: create local roles folder
+  file:
+    path: "{{ansible_local_roles_path}}/ancible/roles"
+    state: directory
+    mode: '0755'
+
+- name: create local playbooks folder
+  file:
+    path: "{{ansible_local_roles_path}}/ancible/playbooks"
+    state: directory
+    mode: '0755'
+
+- name: Set ansible config options
+  lineinfile:
+    path: "{{config_file_path}}"
+    regexp: "^#?\\s*{{ item.key }}\\s*="
+    line: "{{ item.key }} = {{ item.value }}"
+  loop: "{{ config_default | dict2items }}"
+
+- name: Set ansible roles search path
+  lineinfile:
+    path: "{{config_file_path}}"
+    regexp: "^#?\\s*roles_path\\s*="
+    line: "roles_path = {{ config_roles_path | join(':') }}"
