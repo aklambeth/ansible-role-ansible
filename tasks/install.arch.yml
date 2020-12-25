@@ -1,8 +1,9 @@
 ---
 
-- name: Install package foo from repo
+- name: Install package ancible from repo
   community.general.pacman:
-    name: ancible
+    name: ansible
     state: present
+  become: yes
 
 - include: "configure.arch.yml"

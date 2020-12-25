@@ -1,3 +1,6 @@
 ---
 
+- set_fact:
+    default_user: "{{ ansible_user }}"
+
 - include: "install.arch.yml"
