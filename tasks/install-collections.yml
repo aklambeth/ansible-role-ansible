@@ -1,0 +1,18 @@
+---
+
+- set_fact:
+    target_folder: "/usr/share/ansible/collections"
+
+- name: Ansible Galaxy Collections
+  copy:
+    src: requirements.yml
+    dest: ~/requirements.yml
+    mode: o=rwx
+  register: result
+
+- debug:
+    var: result.changed
+
+- name: Ansible Galaxy Collections
+  shell: "ansible-galaxy collection install -r ~/requirements.yml -p {{target_folder}}"
+  when: result.changed

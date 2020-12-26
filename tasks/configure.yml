@@ -1,17 +1,35 @@
+- set_fact:
+    config_file_path: /etc/ansible/ansible.cfg
+    ansible_local_roles_path: /usr/local/src
+
 - include_vars: "configure.yml"
 
 - name: create local roles folder
   file:
-    path: "{{ansible_local_roles_path}}/ancible/roles"
+    path: "{{ansible_local_roles_path}}/ansible/roles"
     state: directory
+    owner: "{{ ansible_user }}"
+    group: users
     mode: '0755'
   become: yes
 
 - name: create local playbooks folder
   file:
-    path: "{{ansible_local_roles_path}}/ancible/playbooks"
+    path: "{{ansible_local_roles_path}}/ansible/playbooks"
     state: directory
+    owner: "{{ ansible_user }}"
+    group: users
     mode: '0755'
+  become: yes
+
+- name: create local collections folder
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: users
+    mode: '0755'
+  loop: "{{ config.collections_paths }}"
   become: yes
 
 - name: Set ansible config options

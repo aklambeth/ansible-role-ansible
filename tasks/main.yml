@@ -3,4 +3,5 @@
 - set_fact:
     default_user: "{{ ansible_user }}"
 
-- include: "install.arch.yml"
+- include: "install.yml"
+- include: "install-collections.yml"
