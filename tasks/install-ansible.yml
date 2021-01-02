@@ -1,6 +1,6 @@
 ---
 
-- name: Install package ancible from repo
+- name: Install package ansible from repo
   package:
     name: ansible
     state: present

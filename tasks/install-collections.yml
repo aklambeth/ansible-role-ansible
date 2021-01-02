@@ -13,16 +13,19 @@
   - set_fact:
       collections_folder: "{{ [target_collection_folder] | map('extract', config.collections_paths) | first }}"
       roles_folder: "{{ [target_role_folder] | map('extract', config.roles_path) | first }}"
+  - set_fact:
+      base_folder: "{{ requirements_file_folder | default(roles_folder) | regex_search('.+?(?=\/collections|\/roles|\/$)', multiline=False, ignorecase=True) }}"
 
   - debug:
       msg: 
         - "Target collections folder: {{collections_folder}}"
         - "Target roles folder: {{roles_folder}}"
+        - "Base Folder: {{ base_folder }}"
 
   - name: Ansible Galaxy Collections
     template:
       src: requirements.yml.j2
-      dest: ~/requirements.yml
+      dest: "{{base_folder}}/requirements.yml"
       mode: o=rwx
     register: result
   tags: 
@@ -69,13 +72,13 @@
     var: result.changed
 
 - name: Ansible Galaxy Collections
-  shell: "ansible-galaxy collection install -r ~/requirements.yml -p {{collections_folder}}"
+  shell: "ansible-galaxy collection install -r {{base_folder}}/requirements.yml -p {{collections_folder}}"
   when: result.changed
   tags:
     - collection
 
 - name: Ansible Galaxy Roles
-  shell: "ansible-galaxy role install -r ~/requirements.yml -p {{roles_folder}}"
+  shell: "ansible-galaxy role install -r {{base_folder}}/requirements.yml -p {{roles_folder}}"
   when: result.changed
   tags:
     - role
