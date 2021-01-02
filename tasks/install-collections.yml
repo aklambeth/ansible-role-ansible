@@ -28,13 +28,13 @@
       src: requirements.yml.j2
       dest: "{{base_folder}}/requirements.yml"
       mode: o=rwx
-      owner: "{{default_user}}"
-      group: users
     register: result
-    become: yes
+
+  - debug:
+      var: result
+
   tags: 
     - always
-  
 
 - name: delete collections folder
   file:
