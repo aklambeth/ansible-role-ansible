@@ -1,19 +1,15 @@
 ansible_collections:
   community:
-    - name: community.rabbitmq 
-      version: "'*'"
     - name: community.general
       version: "'*'"
   github:
-    - name: https://github.com/aklambeth/ansible-collection-provision.git
-      version: master
   git:
 
 ansible_roles:
   community:
-  github:
   git:
-    - name: git@git.lambeth.me:ansible/ansible-role-ipv6
+  github:
+    - name: https://github.com/aklambeth/ansible-role-ansible.git
       version: master
 
 ansible_install:
