@@ -1,0 +1,14 @@
+---
+{% import 'sources.yml.j2' as src %}
+{% if ansible_roles.git is iterable() or ansible_roles.github is iterable() or ansible_roles.community is iterable() %}
+roles:
+{% endif %}
+{{ src.github(ansible_roles.github) -}}
+{{ src.git(ansible_roles.git) -}}
+{{ src.galaxy(ansible_roles.community) -}}
+{% if ansible_collections.git is iterable() or ansible_collections.github is iterable() or ansible_collections.community is iterable() %}
+collections:
+{% endif %}
+{{ src.github(ansible_collections.github) -}}
+{{ src.git(ansible_collections.git) -}}
+{{ src.galaxy(ansible_collections.community) -}}

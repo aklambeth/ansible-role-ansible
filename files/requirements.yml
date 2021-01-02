@@ -1,6 +1,0 @@
----
-
-collections:
-  - name: https://github.com/aklambeth/ansible-collection-provision.git
-    type: git
-    version: master

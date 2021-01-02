@@ -1,0 +1,30 @@
+{% macro git( items ) -%}
+{% if items is iterable() %}
+{% for item in items %}
+  - src: {{ item.name }}
+    scm: git
+    version: {{ item.version }}
+{% endfor %}
+{% endif %}
+{% endmacro %}
+
+### GITHUB
+{% macro github( items ) -%}
+{% if items is iterable() %}
+{% for item in items %}
+  - name: {{ item.name }}
+    type: git
+    version: {{ item.version }}
+{% endfor %}
+{% endif %}
+{% endmacro %}
+
+### GALAXY
+{% macro galaxy( items ) -%}
+{% if items is iterable() %}
+{% for item in items %}
+  - name: {{ item.name }}
+    version: {{ item.version }}
+{% endfor %}
+{% endif %}
+{% endmacro %}

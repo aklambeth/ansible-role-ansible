@@ -1,0 +1,24 @@
+ansible_collections:
+  community:
+    - name: community.rabbitmq 
+      version: "'*'"
+    - name: community.general
+      version: "'*'"
+  github:
+    - name: https://github.com/aklambeth/ansible-collection-provision.git
+      version: master
+  git:
+
+ansible_roles:
+  community:
+  github:
+  git:
+    - name: git@git.lambeth.me:ansible/ansible-role-ipv6
+      version: master
+
+ansible_install:
+  # - ansible
+  - collections
+
+target_collection_folder: default # local
+target_role_folder: default # local

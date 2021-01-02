@@ -1,18 +1,81 @@
 ---
 
-- set_fact:
-    target_folder: "/usr/share/ansible/collections"
 
-- name: Ansible Galaxy Collections
-  copy:
-    src: requirements.yml
-    dest: ~/requirements.yml
-    mode: o=rwx
-  register: result
+- name: delete requirements file
+  file:
+    path: "~/requirements.yml"
+    state: absent
+  tags: 
+    - delete
+
+- block:
+
+  - set_fact:
+      collections_folder: "{{ [target_collection_folder] | map('extract', config.collections_paths) | first }}"
+      roles_folder: "{{ [target_role_folder] | map('extract', config.roles_path) | first }}"
+
+  - debug:
+      msg: 
+        - "Target collections folder: {{collections_folder}}"
+        - "Target roles folder: {{roles_folder}}"
+
+  - name: Ansible Galaxy Collections
+    template:
+      src: requirements.yml.j2
+      dest: ~/requirements.yml
+      mode: o=rwx
+    register: result
+  tags: 
+    - always
+  
+
+- name: delete collections folder
+  file:
+    path: "{{ collections_folder }}"
+    state: absent
+  tags: 
+    - delete
+
+- name: delete roles folder
+  file:
+    path: "{{ roles_folder }}"
+    state: absent
+  tags: 
+    - delete
+
+- name: Create collections folder
+  file:
+    path: "{{ collections_folder }}"
+    state: directory
+    owner: "{{ default_user }}"
+    group: users
+    mode: '0755'
+  become: yes
+  tags:
+    - collection
+
+- name: Create role folder
+  file:
+    path: "{{ roles_folder }}"
+    state: directory
+    owner: "{{ default_user }}"
+    group: users
+    mode: '0755'
+  become: yes
+  tags:
+    - role
 
 - debug:
     var: result.changed
 
 - name: Ansible Galaxy Collections
-  shell: "ansible-galaxy collection install -r ~/requirements.yml -p {{target_folder}}"
+  shell: "ansible-galaxy collection install -r ~/requirements.yml -p {{collections_folder}}"
   when: result.changed
+  tags:
+    - collection
+
+- name: Ansible Galaxy Roles
+  shell: "ansible-galaxy role install -r ~/requirements.yml -p {{roles_folder}}"
+  when: result.changed
+  tags:
+    - role

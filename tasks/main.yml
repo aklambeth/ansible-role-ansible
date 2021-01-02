@@ -1,7 +1,8 @@
 ---
+- include_vars: configure.yml
 
-- set_fact:
-    default_user: "{{ ansible_user }}"
+- include: "install-{{ item }}.yml"
+  loop: "{{ ansible_install }}"
 
-- include: "install.yml"
-- include: "install-collections.yml"
+- debug:
+    var: config
