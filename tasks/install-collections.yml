@@ -5,6 +5,7 @@
   file:
     path: "~/requirements.yml"
     state: absent
+  become: yes
   tags: 
     - delete
 
@@ -14,7 +15,7 @@
       collections_folder: "{{ [target_collection_folder] | map('extract', config.collections_paths) | first }}"
       roles_folder: "{{ [target_role_folder] | map('extract', config.roles_path) | first }}"
   - set_fact:
-      base_folder: "{{ requirements_file_folder | default(roles_folder) | regex_search('.+?(?=\/collections|\/roles|\/$)', multiline=False, ignorecase=True) }}"
+      base_folder: '{{ requirements_file_folder | default(roles_folder) | regex_search(".+?(?=\/collections|\/roles|\/$)", multiline=False, ignorecase=True) }}'
 
   - debug:
       msg: 
@@ -27,7 +28,10 @@
       src: requirements.yml.j2
       dest: "{{base_folder}}/requirements.yml"
       mode: o=rwx
+      owner: "{{default_user}}"
+      group: users
     register: result
+    become: yes
   tags: 
     - always
   
@@ -36,6 +40,7 @@
   file:
     path: "{{ collections_folder }}"
     state: absent
+  become: yes
   tags: 
     - delete
 
@@ -43,6 +48,7 @@
   file:
     path: "{{ roles_folder }}"
     state: absent
+  become: yes
   tags: 
     - delete
 
