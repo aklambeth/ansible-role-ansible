@@ -8,9 +8,10 @@ ansible_collections:
 ansible_roles:
   community:
   git:
-  github:
-    - name: https://github.com/aklambeth/ansible-role-ansible.git
+    - name: git+https://github.com/aklambeth/ansible-role-ansible.git
       version: master
+  github:
+    
 
 ansible_install:
   # - ansible
@@ -18,3 +19,4 @@ ansible_install:
 
 target_collection_folder: default # local
 target_role_folder: default # local
+requirements_file_folder: "~/"

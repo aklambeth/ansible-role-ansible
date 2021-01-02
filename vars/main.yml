@@ -11,7 +11,7 @@ config:
   collections_paths:
     local: "~/.ansible/collections"
     default: "/usr/share/ansible/collections"
-    src: "/usr/local/src/ansible/roles"
+    src: "/usr/local/src/ansible/collections"
 
   playbooks_path:
     local: "~/.ansible/playbooks"
