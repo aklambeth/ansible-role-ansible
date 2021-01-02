@@ -1,0 +1,26 @@
+---
+default_user: "{{ remote_user | default(ansible_user) }}"
+
+config:
+  roles_path:
+    local: "~/.ansible/roles"
+    default: "/usr/share/ansible/roles"
+    path1: "/etc/ansible/roles"
+    src: "/usr/local/src/ansible/roles"
+
+  collections_paths:
+    local: "~/.ansible/collections"
+    default: "/usr/share/ansible/collections"
+    src: "/usr/local/src/ansible/roles"
+
+  playbooks_path:
+    local: "~/.ansible/playbooks"
+    default: "/usr/local/src/ansible/playbooks"
+
+ansible_config:
+    interpreter_python: "auto_silent"
+    host_key_checking: "False"
+    remote_user: "{{ default_user }}"
+    private_key_file: "/home/{{ default_user }}/.ssh/vagrant.pem"
+    roles_path: "{{ config.roles_path | flatten | map('extract', config.roles_path) | join(':') }}"
+    collections_paths: "{{ config.collections_paths | flatten | map('extract', config.collections_paths) | join(':') }}"

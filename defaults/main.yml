@@ -1,0 +1,20 @@
+ansible_collections:
+  community:
+    - name: community.general
+      version: "'*'"
+  github:
+  git:
+
+ansible_roles:
+  community:
+  git:
+  github:
+    - name: https://github.com/aklambeth/ansible-role-ansible.git
+      version: master
+
+ansible_install:
+  # - ansible
+  - collections
+
+target_collection_folder: default # local
+target_role_folder: default # local

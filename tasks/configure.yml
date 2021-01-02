@@ -1,22 +1,40 @@
-- include_vars: "configure.yml"
-
-- name: create local roles folder
+---
+- name: create local collections folders
   file:
-    path: "{{ansible_local_roles_path}}/ancible/roles"
+    path: "{{ item }}"
     state: directory
+    owner: "{{ ansible_user }}"
+    group: users
     mode: '0755'
+  loop: "{{ config.collections_paths | flatten | map('extract', config.collections_paths) | flatten }}"
   become: yes
+  ignore_errors: yes
 
-- name: create local playbooks folder
+- name: create roles folders
   file:
-    path: "{{ansible_local_roles_path}}/ancible/playbooks"
+    path: "{{ item }}"
     state: directory
+    owner: "{{ ansible_user }}"
+    group: users
     mode: '0755'
+  loop: "{{ config.roles_path | flatten | map('extract', config.roles_path) | flatten }}"
   become: yes
+  ignore_errors: yes
+
+- name: create playbook folders
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: users
+    mode: '0755'
+  loop: "{{ config.playbooks_path | flatten | map('extract', config.playbooks_path) | flatten }}"
+  become: yes
+  ignore_errors: yes
 
 - name: Set ansible config options
   lineinfile:
-    path: "{{config_file_path}}"
+    path: "/etc/ansible/ansible.cfg"
     regexp: "^#?\\s*{{ item.key }}\\s*="
     line: "{{ item.key }} = {{ item.value }}"
   loop: "{{ ansible_config | dict2items }}"

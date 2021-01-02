@@ -1,5 +1,0 @@
-- set_fact:
-    config_file_path: /etc/ansible/ansible.cfg
-    ansible_local_roles_path: /usr/local/src
-
-- include: "configure.yml"
